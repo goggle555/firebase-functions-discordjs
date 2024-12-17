@@ -14,10 +14,8 @@ import { ResponseLike, REST, Routes } from "discord.js";
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-interface CustomResponseLike extends ResponseLike {}
-
 export const helloWorld = onRequest(async (request, response) => {
-  const responseLike: CustomResponseLike = {
+  const responseLike: ResponseLike = {
     body: null,
     arrayBuffer: function (): Promise<ArrayBuffer> {
       throw new Error("Function not implemented.");
