@@ -10,13 +10,14 @@
 import { onRequest } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import { ResponseLike, REST, Routes } from "discord.js";
+import { ReadableStream } from "node:stream/web";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
 export const helloWorld = onRequest(async (request, response) => {
   const responseLike: ResponseLike = {
-    body: null,
+    body: new ReadableStream(),
     arrayBuffer: function (): Promise<ArrayBuffer> {
       throw new Error("Function not implemented.");
     },
