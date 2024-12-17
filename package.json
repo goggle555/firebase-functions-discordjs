@@ -1,8 +1,4 @@
 {
-  "dependencies": {
-    "firebase-admin": "13.0.1",
-    "firebase-functions": "6.1.2"
-  },
   "name": "firebase-functions-discordjs",
   "version": "1.0.0",
   "main": "index.js",
