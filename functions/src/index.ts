@@ -9,14 +9,46 @@
 
 import { onRequest } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
-import { Client, GatewayIntentBits } from "discord.js";
+import { ResponseLike, REST, Routes } from "discord.js";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const helloWorld = onRequest((request, response) => {
-  const client = new Client({ intents: [GatewayIntentBits.MessageContent] });
-  client.login("TOKEN");
+interface CustomResponseLike extends ResponseLike {}
+
+export const helloWorld = onRequest(async (request, response) => {
+  const responseLike: CustomResponseLike = {
+    body: null,
+    arrayBuffer: function (): Promise<ArrayBuffer> {
+      throw new Error("Function not implemented.");
+    },
+    bodyUsed: false,
+    headers: new Headers(),
+    json: function (): Promise<unknown> {
+      throw new Error("Function not implemented.");
+    },
+    ok: false,
+    status: 0,
+    statusText: "",
+    text: function (): Promise<string> {
+      throw new Error("Function not implemented.");
+    },
+  };
+
+  console.log({ responseLike });
+
+  const rest = new REST({ version: "10" }).setToken("TOKEN");
+  try {
+    await rest.post(Routes.channelMessages("CHANNEL_ID"), {
+      body: {
+        content: "A message via REST!",
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error);
+    }
+  }
 
   logger.info("Hello logs!", { structuredData: true });
   response.send("Hello from Firebase!");
